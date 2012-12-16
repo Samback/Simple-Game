@@ -42,6 +42,7 @@
         CCSprite *player = [CCSprite spriteWithFile:@"player.png"];
         player.position = ccp(player.contentSize.width/2, winSize.height/2);
         [self addChild:player];
+        [self schedule:@selector(gameLogic:) interval:1.0];
     }
     return self;
 
@@ -105,4 +106,9 @@
     [monster runAction:[CCSequence actions:actionMove, actionMoveDone, nil]];
     
 }
+
+-(void)gameLogic:(ccTime)dt {
+    [self addMonster];
+}
+
 @end
