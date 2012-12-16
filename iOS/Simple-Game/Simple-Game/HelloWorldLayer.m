@@ -115,4 +115,48 @@
     [self addMonster];
 }
 
+
+- (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    // Choose one of the touches to work with
+    UITouch *touch = [touches anyObject];
+    CGPoint location = [self convertTouchToNodeSpace:touch];
+    
+    // Set up initial location of projectile
+    CGSize winSize = [[CCDirector sharedDirector] winSize];
+    CCSprite *projectile = [CCSprite spriteWithFile:@"projectile.png"];
+    projectile.position = ccp(20, winSize.height/2);
+    
+    // Determine offset of location to projectile
+    CGPoint offset = ccpSub(location, projectile.position);
+    
+    // Bail out if you are shooting down or backwards
+    if (offset.x <= 0) return;
+    
+    // Ok to add now - we've double checked position
+    [self addChild:projectile];
+    
+    int realX = winSize.width + (projectile.contentSize.width/2);
+    float ratio = (float) offset.y / (float) offset.x;
+    int realY = (realX * ratio) + projectile.position.y;
+    CGPoint realDest = ccp(realX, realY);
+    
+    // Determine the length of how far you're shooting
+    int offRealX = realX - projectile.position.x;
+    int offRealY = realY - projectile.position.y;
+    float length = sqrtf((offRealX*offRealX)+(offRealY*offRealY));
+    float velocity = 480/1; // 480pixels/1sec
+    float realMoveDuration = length/velocity;
+    
+    // Move projectile to actual endpoint
+    [projectile runAction:
+     [CCSequence actions:
+      [CCMoveTo actionWithDuration:realMoveDuration position:realDest],
+      [CCCallBlockN actionWithBlock:^(CCNode *node) {
+         [node removeFromParentAndCleanup:YES];
+     }],
+      nil]];
+    
+}
+
 @end
