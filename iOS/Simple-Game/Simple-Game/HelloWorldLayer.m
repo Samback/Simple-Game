@@ -9,6 +9,8 @@
 
 // Import the interfaces
 #import "HelloWorldLayer.h"
+//Audio engine
+#import "SimpleAudioEngine.h"
 
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
@@ -47,7 +49,10 @@
         [self schedule:@selector(gameLogic:) interval:1.0];
         //Enable touches to screen
         [self setIsTouchEnabled:YES];
-        
+        //Enable update of enemy kills
+        [self schedule:@selector(update:)];
+        //Init background music        
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music-aac.caf"];
         _monsters = [[NSMutableArray alloc] init];
         _projectiles = [[NSMutableArray alloc] init];
     }
@@ -76,7 +81,8 @@
 - (void) addMonster {
     
     CCSprite * monster = [CCSprite spriteWithFile:@"monster.png"];
-    
+    monster.tag = 1;
+    [_monsters addObject:monster];
     // Determine where to spawn the monster along the Y axis
     CGSize winSize = [CCDirector sharedDirector].winSize;
     int minY = monster.contentSize.height / 2;
@@ -99,7 +105,8 @@
     CCMoveTo * actionMove = [CCMoveTo actionWithDuration:actualDuration
                                                 position:ccp(-monster.contentSize.width/2, actualY)];
     CCCallBlockN * actionMoveDone = [CCCallBlockN actionWithBlock:^(CCNode *node) {
-        [node removeFromParentAndCleanup:YES];
+        //[node removeFromParentAndCleanup:YES];
+        [_monsters removeObject:node];
     }];
     [monster runAction:[CCSequence actions:actionMove, actionMoveDone, nil]];
     
@@ -112,6 +119,8 @@
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     
+    //Sound of throwing
+    [[SimpleAudioEngine sharedEngine] playEffect:@"pew-pew-lei.caf"];
     // Choose one of the touches to work with
     UITouch *touch = [touches anyObject];
     CGPoint location = [self convertTouchToNodeSpace:touch];
@@ -120,7 +129,8 @@
     CGSize winSize = [[CCDirector sharedDirector] winSize];
     CCSprite *projectile = [CCSprite spriteWithFile:@"projectile.png"];
     projectile.position = ccp(20, winSize.height/2);
-    
+    projectile.tag = 2;
+    [_projectiles addObject:projectile];
     // Determine offset of location to projectile
     CGPoint offset = ccpSub(location, projectile.position);
     
@@ -147,10 +157,40 @@
      [CCSequence actions:
       [CCMoveTo actionWithDuration:realMoveDuration position:realDest],
       [CCCallBlockN actionWithBlock:^(CCNode *node) {
-         [node removeFromParentAndCleanup:YES];
+        // [node removeFromParentAndCleanup:YES];
+         [_projectiles removeObject:node];
      }],
-      nil]];
-    
+      nil]];    
 }
+
+- (void)update:(ccTime)dt {
+    
+    NSMutableArray *projectilesToDelete = [[NSMutableArray alloc] init];
+    for (CCSprite *projectile in _projectiles) {
+        
+        NSMutableArray *monstersToDelete = [[NSMutableArray alloc] init];
+        for (CCSprite *monster in _monsters) {
+            
+            if (CGRectIntersectsRect(projectile.boundingBox, monster.boundingBox)) {
+                [monstersToDelete addObject:monster];
+            }
+        }
+        
+        for (CCSprite *monster in monstersToDelete) {
+            [_monsters removeObject:monster];
+            [self removeChild:monster cleanup:YES];
+        }
+        
+        if (monstersToDelete.count > 0) {
+            [projectilesToDelete addObject:projectile];
+        }
+    }
+    
+    for (CCSprite *projectile in projectilesToDelete) {
+        [_projectiles removeObject:projectile];
+        [self removeChild:projectile cleanup:YES];
+    }
+}
+
 
 @end
