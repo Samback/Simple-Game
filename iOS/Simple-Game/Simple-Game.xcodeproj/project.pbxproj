@@ -141,6 +141,7 @@
 		5012AAC7167E25FB00C138F1 /* projectile.png in Resources */ = {isa = PBXBuildFile; fileRef = 5012AABE167E25FB00C138F1 /* projectile.png */; };
 		5012AAC8167E25FB00C138F1 /* background-music-aac.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5012AAC0167E25FB00C138F1 /* background-music-aac.caf */; };
 		5012AAC9167E25FB00C138F1 /* pew-pew-lei.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5012AAC1167E25FB00C138F1 /* pew-pew-lei.caf */; };
+		5012AACC167E44C600C138F1 /* GameOverlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5012AACB167E44C500C138F1 /* GameOverlayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -414,6 +415,8 @@
 		5012AABE167E25FB00C138F1 /* projectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = projectile.png; sourceTree = "<group>"; };
 		5012AAC0167E25FB00C138F1 /* background-music-aac.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "background-music-aac.caf"; sourceTree = "<group>"; };
 		5012AAC1167E25FB00C138F1 /* pew-pew-lei.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pew-pew-lei.caf"; sourceTree = "<group>"; };
+		5012AACA167E44C500C138F1 /* GameOverlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverlayer.h; sourceTree = "<group>"; };
+		5012AACB167E44C500C138F1 /* GameOverlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameOverlayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -481,6 +484,8 @@
 				5012A91F167E245F00C138F1 /* Resources */,
 				5012A939167E245F00C138F1 /* libs */,
 				5012AA92167E246100C138F1 /* Supporting Files */,
+				5012AACA167E44C500C138F1 /* GameOverlayer.h */,
+				5012AACB167E44C500C138F1 /* GameOverlayer.m */,
 			);
 			path = "Simple-Game";
 			sourceTree = "<group>";
@@ -1066,6 +1071,7 @@
 				5012AA98167E246100C138F1 /* AppDelegate.m in Sources */,
 				5012AA9B167E246100C138F1 /* HelloWorldLayer.m in Sources */,
 				5012AA9E167E246100C138F1 /* IntroLayer.m in Sources */,
+				5012AACC167E44C600C138F1 /* GameOverlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
