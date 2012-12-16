@@ -15,6 +15,8 @@
 // HelloWorldLayer
 @interface HelloWorldLayer : CCLayerColor <GKAchievementViewControllerDelegate, GKLeaderboardViewControllerDelegate>
 {
+    NSMutableArray * _monsters;
+    NSMutableArray * _projectiles;
 }
 
 // returns a CCScene that contains the HelloWorldLayer as the only child
