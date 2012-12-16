@@ -41,8 +41,12 @@
         CGSize winSize = [CCDirector sharedDirector].winSize;
         CCSprite *player = [CCSprite spriteWithFile:@"player.png"];
         player.position = ccp(player.contentSize.width/2, winSize.height/2);
+        //Add player to screen
         [self addChild:player];
+        //Add monsters to screen
         [self schedule:@selector(gameLogic:) interval:1.0];
+        //Enable touches to screen
+        [self setIsTouchEnabled:YES];
     }
     return self;
 
